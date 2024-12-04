@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = htmlspecialchars($name, ENT_QUOTES);
         $email = htmlspecialchars($email, ENT_QUOTES);
         $messageText = htmlspecialchars($messageText, ENT_QUOTES);
-        $messageText = nl2br($messageText); 
+        $messageText = str_replace("\n", '{{nl}}', $messageText); 
         $currentDateTime = $dateTime->format('Y-m-d H:i:s');
         $newEntry = $name . '|' . $email . '|' . $currentDateTime . '|' . $messageText . PHP_EOL;
         file_put_contents('data.txt', $newEntry, FILE_APPEND);
@@ -28,13 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post" action="">
         <label for="name">Имя:</label><br>
         <input type="text" id="name" name="name" required><br><br>
-        
         <label for="email">Электронная почта:</label><br>
         <input type="email" id="email" name="email" required><br><br>
-        
         <label for="message">Текст сообщения:</label><br>
         <textarea id="message" name="message" required></textarea><br><br>
-        
         <button type="submit">Отправить</button>
     </form>
 
@@ -46,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $allMessages = array_reverse($allMessages);     
         foreach ($allMessages as $singleMessage) {
             list($name, $email, $dateTime, $text) = explode('|', $singleMessage);
+            $text = str_replace('{{nl}}', "\n", $text); 
+            $text = nl2br($text); 
             echo "<div>";
             echo "<strong>{$name}</strong> <br> {$email} <br> {$dateTime} <br>";
             echo "<p>- {$text}</p>";
@@ -57,3 +56,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ?>
 </body>
 </html>
+
