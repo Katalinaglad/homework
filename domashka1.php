@@ -5,7 +5,7 @@
     <title>Калькулятор дней</title>
 </head>
 <body>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>">
         <label for="startDateDay">День начала:</label>
         <input type="number" name="startDateDay" id="startDateDay" min="1" max="31" required><br>
         
@@ -70,12 +70,6 @@
         }
     }
     ?>
-    
-    <?php
-    if (isset($_POST['startDateDay']) && isset($_POST['startDateMonth']) && isset($_POST['startDateYear'])) {
-        session_start();
-        $_SESSION['startDate'] = array('day' => $_POST['startDateDay'], 'month' => $_POST['startDateMonth'], 'year' => $_POST['startDateYear']);
-    }
-    ?>
 </body>
 </html>
+
